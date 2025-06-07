@@ -17,10 +17,10 @@ Implementing algorithms from scratch
 
 ## � Algorithms Implemented
 
-| Algorithm           | Status         | Code                                                                  |
-| ------------------- | -------------- | --------------------------------------------------------------------- |
-| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/logistic_regression.py) |
-| Random Forest       | 🔄 In progress | Coming soon                                                           |
+| Algorithm           | Status         | Code                                                                         |
+| ------------------- | -------------- | ---------------------------------------------------------------------------- |
+| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/models/logistic_regression.py) |
+| Random Forest       | 🔄 In progress | Coming soon                                                                  |
 
 ## 📈 Progress Roadmap
 
