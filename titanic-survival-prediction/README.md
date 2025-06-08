@@ -16,12 +16,12 @@
 
 ## 🛠️ Implementation Progress
 
-| Algorithm           | Status         | Code                                                                         | Notebook                                                  |
-| ------------------- | -------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/models/logistic_regression.py) | [View notebook](./notebooks/01_eda_baseline.ipynb)        |
-| Feature Engineering | 🔄 In progress | [View code](./titanic-survival-prediction/src/models/logistic_regression.py) | [View notebook](./notebooks/02_feature_engineering.ipynb) |
-| Random Forest       | ⏳ Planned     | Coming soon                                                                  | Coming soon                                               |
-| Model Tuning        | ⏳ Planned     | Coming soon                                                                  | Coming soon                                               |
+| Algorithm           | Status         | Code                                                                               | Notebook                                                  |
+| ------------------- | -------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/models/basic_logistic_regression.py) | [View notebook](./notebooks/01_eda_baseline.ipynb)        |
+| Feature Engineering | 🔄 In progress | [View code](./titanic-survival-prediction/src/models/basic_logistic_regression.py) | [View notebook](./notebooks/02_feature_engineering.ipynb) |
+| Random Forest       | ⏳ Planned     | Coming soon                                                                        | Coming soon                                               |
+| Model Tuning        | ⏳ Planned     | Coming soon                                                                        | Coming soon                                               |
 
 ## 📈 Roadmap
 
@@ -116,10 +116,12 @@ title_mapping = {
 
 #### Results and Analysis
 
-**Model Performance:**
+### MODEL PERFORMANCE COMPARISON
 
-- **Before Title Feature**: 78.2% accuracy (Sex + Pclass)
-- **After Title Feature**: 78.2% accuracy (Sex + Pclass + Title_Group)
+| **Version**  | **Features Used**                | **Our Model** | **Sklearn** | **Δ**     |
+| ------------ | -------------------------------- | ------------- | ----------- | --------- |
+| **Baseline** | `Sex` + `Pclass`                 | 78.20%        | 78.20%      | 🟢 ±0.00% |
+| **Enhanced** | `Sex` + `Pclass` + `Title_Group` | 78.20%        | 78.20%      | 🟢 ±0.00% |
 
 **Coefficient Analysis:**
 
@@ -148,4 +150,73 @@ While the title analysis provides valuable insights into social hierarchies aboa
 
 #### 2. Next Feature: Age Analysis
 
-Moving forward with Age feature engineering to capture life stage patterns that may be independent of gender and class...
+Moving forward with Age feature engineering to capture life stage patterns that may be independent of gender and class we started with some EDA. The first issue that we found is that we had 177 NaN around 20% of our dataset, to solve it we decided to use the meadian age of the Titles for those who has NaN age.
+
+Age by Title:
+mean median count
+Title  
+Capt 70.00 70.0 1
+Col 58.00 58.0 2
+Don 40.00 40.0 1
+Dr 42.00 46.5 6
+Jonkheer 38.00 38.0 1
+Lady 48.00 48.0 1
+Major 48.50 48.5 2
+Master 4.57 3.5 36
+Miss 21.77 21.0 146
+Mlle 24.00 24.0 2
+Mme 24.00 24.0 1
+Mr 32.37 30.0 398
+Mrs 35.90 35.0 108
+Ms 28.00 28.0 1
+Rev 43.17 46.5 6
+Sir 49.00 49.0 1
+the Countess 33.00 33.0 1
+
+with it we imputed the age for the 177 missing ones.
+
+#### Results and Analysis
+
+### MODEL PERFORMANCE COMPARISON
+
+| **Version**  | **Features Used**        | **Our Model** | **Sklearn** | **Δ**      |
+| ------------ | ------------------------ | ------------- | ----------- | ---------- |
+| **Baseline** | `Sex` + `Pclass`         | 78.20%        | 78.20%      | 🟢 ±0.00%  |
+| **Enhanced** | `Sex` + `Pclass` + `Age` | 58.70%        | 81.00%      | 🔴 -22.30% |
+
+**Coefficient Analysis:**
+
+```
+Sex_numeric:     10.279541  (Extremely high - potential numerical instability)
+Pclass:          -4.050736  (Unusually high magnitude)
+Age:             -1.260915  (Moderate importance but suspicious scaling)
+```
+
+**Key Findings:**
+
+1. **Severe Performance Degradation**: Our model accuracy dropped significantly (-22.30%) while sklearn improved (+2.80%)
+2. **Coefficient Explosion**: Extremely large coefficient values suggest numerical instability or convergence issues
+3. **Feature Scaling Problem**: Age values (0-80) are on a different scale than Sex (0-1) and Pclass (1-3)
+4. **Potential Overfitting**: Large coefficients indicate the model may be overfitting to training noise
+
+**Root Cause Analysis:**
+The dramatic performance drop points to implementation issues rather than feature relevance, since sklearn shows improvement with the same features.
+
+**Conclusion:**
+Age is a valuable predictor (as evidenced by sklearn's performance gain), but our implementation has critical issues:
+
+- **Feature scaling** is essential when combining features with different ranges
+- **Numerical stability** problems in gradient computation or convergence criteria
+- **Learning rate** may be too high, causing gradient explosion
+- **Regularization** might be needed to prevent overfitting
+
+The Age feature contains meaningful survival patterns independent of gender and class, but requires proper preprocessing and model implementation to realize its potential.
+
+**Decision**:
+
+1. **Immediate**: Implement feature scaling (standardization/normalization)
+2. **Debug**: Review gradient computation and convergence criteria
+3. **Enhance**: Add regularization (L1/L2) to prevent overfitting
+4. **Validate**: Compare step-by-step calculations with sklearn implementation
+
+**Expected Outcome**: With proper implementation, we should achieve ~81% accuracy matching sklearn's performance

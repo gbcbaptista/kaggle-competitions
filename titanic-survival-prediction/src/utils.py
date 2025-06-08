@@ -1,5 +1,22 @@
 import re
+from pathlib import Path
+import pandas as pd
 from models.logistic_regression import sigmoid
+
+def load_data():
+    current_dir = Path(__file__).parent
+    
+    train_path = current_dir / '../data/raw/train.csv'
+    test_path = current_dir / '../data/raw/test.csv'
+    
+    train_path = train_path.resolve()
+    test_path = test_path.resolve()
+    
+    train_df = pd.read_csv(train_path)
+    test_df = pd.read_csv(test_path)
+    
+    return train_df, test_df
+
 
 def sex_mapping(sex):
     sex_map = {'male': 0, 'female': 1}
@@ -48,3 +65,13 @@ def group_mapping(group):
     }
 
     return group_map[group]
+
+def impute_null_age_strategict(df):
+    df_copy = df.copy()
+    df_copy['Title'] = df_copy['Name'].map(extract_title)
+    median_age_per_title = df_copy.groupby('Title')['Age'].median()
+
+    df_copy['Age'] = df_copy.apply(lambda row: median_age_per_title[row['Title']] if pd.isnull(row['Age']) else row['Age'], axis=1)
+    df_copy['Age'].isnull().sum()
+
+    return df_copy

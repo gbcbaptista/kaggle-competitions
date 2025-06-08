@@ -17,10 +17,10 @@ Implementing algorithms from scratch
 
 ## � Algorithms Implemented
 
-| Algorithm           | Status         | Code                                                                         | Notebook                                                                       |
-| ------------------- | -------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/models/logistic_regression.py) | [View notebook](./titanic-survival-prediction/notebooks/01_eda_baseline.ipynb) |
-| Random Forest       | 🔄 In progress | Coming soon                                                                  | Coming soon                                                                    |
+| Algorithm           | Status         | Code                                                                               | Notebook                                                                       |
+| ------------------- | -------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/models/basic_logistic_regression.py) | [View notebook](./titanic-survival-prediction/notebooks/01_eda_baseline.ipynb) |
+| Random Forest       | 🔄 In progress | Coming soon                                                                        | Coming soon                                                                    |
 
 ## 📈 Progress Roadmap
 
