@@ -44,9 +44,11 @@ Currently using Pclass and Gender (Sex) features with logistic regression implem
 
 The goal of this stage is to improve accuracy by incorporating additional features. We're considering the following columns: Name, Age, Cabin, and Ticket, which may yield relevant features for model improvement.
 
+#### 1. Name Feature Analysis
+
 From passenger names, we can extract titles that may indicate social status (e.g., differences between Miss/Mrs, Mr/Dr, or military ranks). After mapping all titles, we obtained these survival rates:
 
-=== SURVIVAL RATE BY TITLE ===
+**=== SURVIVAL RATE BY TITLE ===**
 
 | Titles       | mean     | count |
 | ------------ | -------- | ----- |
@@ -68,7 +70,7 @@ From passenger names, we can extract titles that may indicate social status (e.g
 | Sir          | 1.000000 | 1     |
 | the Countess | 1.000000 | 1     |
 
-Initial grouping proposal:
+**Initial grouping proposal:**
 
 - **Adult_Male:** 'Mr'
 - **Married_Female:** 'Mrs', 'Mme'
@@ -77,21 +79,73 @@ Initial grouping proposal:
 - **Nobility:** 'Lady', 'Sir', 'the Countess', 'Don', 'Jonkheer'
 - **Professional:** 'Dr', 'Rev', 'Col', 'Major', 'Capt'
 
-However, upon reviewing social hierarchies in this historical context, We envisioned important distinctions between them:
+However, upon reviewing social hierarchies in this historical context, we identified important distinctions between professional groups:
 
-- Medical professionals ('Dr')
-- Military ranks ('Col', 'Major', 'Capt')
-- Clergy ('Rev')
+- Medical professionals ('Dr'): 42.86% survival rate
+- Military ranks ('Col', 'Major', 'Capt'): 40.00% survival rate
+- Clergy ('Rev'): 0.00% survival rate
 
-Survival rates analysis:
+**Final grouping strategy:**
 
-- Doctors: 42.86% (7 instances)
-- Military: 40.00% (5 instances combined)
-- Clergy: 0.00% (6 instances)
+### 📊 SURVIVAL RATES BY PASSENGER GROUPS
 
-Combined group survival rates:
+| **Group**      | **Titles Included**                              | **Survival Rate** |
+| -------------- | ------------------------------------------------ | ----------------- |
+| Married_Female | `Mrs`, `Mme`                                     | **79.37%**        |
+| Single_Female  | `Miss`, `Mlle`, `Ms`                             | **70.27%**        |
+| Nobility       | `Lady`, `Sir`, `the Countess`, `Don`, `Jonkheer` | 60.00%            |
+| Child_Male     | `Master`                                         | 57.50%            |
+| Professional   | `Dr`, `Col`, `Major`, `Capt`                     | 41.67%            |
+| Adult_Male     | `Mr`                                             | 15.67%            |
+| Clergy         | `Rev`                                            | **0.00%**         |
 
-- Doctors + Military: 41.67%
-- Clergy: 0.00%
+**Implementation:**
 
-Other groups will be reviewed next... (To be continued)
+```python
+title_mapping = {
+    'Adult_Male': 0,
+    'Married_Female': 1,
+    'Single_Female': 2,
+    'Child_Male': 3,
+    'Nobility': 4,
+    'Professional': 5,
+    'Clergy': 6,
+    'Other': 7
+}
+```
+
+#### Results and Analysis
+
+**Model Performance:**
+
+- **Before Title Feature**: 78.2% accuracy (Sex + Pclass)
+- **After Title Feature**: 78.2% accuracy (Sex + Pclass + Title_Group)
+
+**Coefficient Analysis:**
+
+```
+Sex_numeric:           2.268361  (High importance)
+Pclass:               -0.843786  (Moderate importance)
+Title_Group_numeric:   0.225303  (Low importance)
+```
+
+**Key Findings:**
+
+1. **High Multicollinearity**: Title groups are strongly correlated with Sex (r ≈ 0.85)
+2. **Redundant Information**: Most title information already captured by Sex feature
+3. **Feature Interaction**: The model prioritizes Sex over title-based social status
+
+**Conclusion:**
+While the title analysis provides valuable insights into social hierarchies aboard the Titanic, it doesn't improve model performance due to redundancy with existing features. The feature engineering process revealed that:
+
+- Gender remains the strongest predictor
+- Social class (Pclass) provides complementary information
+- Title-based groupings are largely redundant with gender
+
+**Decision**: Remove Title_Group_numeric from final model to avoid multicollinearity.
+
+---
+
+#### 2. Next Feature: Age Analysis
+
+Moving forward with Age feature engineering to capture life stage patterns that may be independent of gender and class...
