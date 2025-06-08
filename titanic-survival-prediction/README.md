@@ -16,12 +16,12 @@
 
 ## 🛠️ Implementation Progress
 
-| Algorithm           | Status         | Code                                                                               | Notebook                                                  |
-| ------------------- | -------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Logistic Regression | ✅ Complete    | [View code](./titanic-survival-prediction/src/models/basic_logistic_regression.py) | [View notebook](./notebooks/01_eda_baseline.ipynb)        |
-| Feature Engineering | 🔄 In progress | [View code](./titanic-survival-prediction/src/models/basic_logistic_regression.py) | [View notebook](./notebooks/02_feature_engineering.ipynb) |
-| Random Forest       | ⏳ Planned     | Coming soon                                                                        | Coming soon                                               |
-| Model Tuning        | ⏳ Planned     | Coming soon                                                                        | Coming soon                                               |
+| Algorithm           | Status         | Code                                                   | Notebook                                                  |
+| ------------------- | -------------- | ------------------------------------------------------ | --------------------------------------------------------- |
+| Logistic Regression | ✅ Complete    | [View code](./src/models/basic_logistic_regression.py) | [View notebook](./notebooks/01_eda_baseline.ipynb)        |
+| Feature Engineering | 🔄 In progress | [View code](./src/models/basic_logistic_regression.py) | [View notebook](./notebooks/02_feature_engineering.ipynb) |
+| Random Forest       | ⏳ Planned     | Coming soon                                            | Coming soon                                               |
+| Model Tuning        | ⏳ Planned     | Coming soon                                            | Coming soon                                               |
 
 ## 📈 Roadmap
 
