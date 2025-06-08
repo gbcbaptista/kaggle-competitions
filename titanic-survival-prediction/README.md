@@ -77,7 +77,7 @@ Initial grouping proposal:
 - **Nobility:** 'Lady', 'Sir', 'the Countess', 'Don', 'Jonkheer'
 - **Professional:** 'Dr', 'Rev', 'Col', 'Major', 'Capt'
 
-However, upon reviewing social hierarchies in this historical context, we notice important distinctions between:
+However, upon reviewing social hierarchies in this historical context, We envisioned important distinctions between them:
 
 - Medical professionals ('Dr')
 - Military ranks ('Col', 'Major', 'Capt')
