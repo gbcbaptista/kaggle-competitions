@@ -221,3 +221,117 @@ The Age feature contains meaningful survival patterns independent of gender and 
 4. **Validate**: Compare step-by-step calculations with sklearn implementation
 
 **Expected Outcome**: With proper implementation, we should achieve ~81% accuracy matching sklearn's performance
+
+#### 2.1. Improve our logistic regression implementation
+
+The first issue that we identified is that our features have very different scales (Sex: 0-1, Pclass: 1-3, Age: 0-80) and we can see that this may be causing the coefficients to explode to values like 10.28 and -4.05. The dramatic performance drop is also a clear sign, so let's implement **Feature Standardization**.
+
+##### 🧮 Mathematical Foundation
+
+**Why Feature Scaling Matters:**
+When features have different scales, the gradient descent algorithm struggles because:
+
+- Large-scale features (Age: 0-80) dominate the cost function
+- Small-scale features (Sex: 0-1) get overshadowed
+- The algorithm takes much longer to converge or may not converge at all
+
+**Z-Score Standardization Formula:**
+For each feature column j, we transform every value x using:
+
+```
+x_scaled = (x - μ) / σ
+```
+
+Where:
+
+- **μ (mu)** = mean of the feature: `μ = (1/m) Σ(x_i)`
+- **σ (sigma)** = standard deviation: `σ = √[(1/m) Σ(x_i - μ)²]`
+- **m** = number of training examples
+
+**Result:** All features will have μ = 0 and σ = 1 (standard normal distribution)
+
+##### 💻 Implementation
+
+```python
+class StandardScaler:
+    def __init__(self):
+        self.mean_ = None
+        self.std_ = None
+
+    def fit(self, X):
+        # Calculate μ for each feature column
+        self.mean_ = np.mean(X, axis=0)
+
+        # Calculate σ for each feature column
+        self.std_ = np.std(X, axis=0)
+
+        # Handle constant features (σ = 0) to avoid division by zero
+        self.std_[self.std_ == 0] = 1.0
+        return self
+
+    def transform(self, X):
+        # Apply: x_scaled = (x - μ) / σ
+        return (X - self.mean_) / self.std_
+
+    def fit_transform(self, X):
+        # Convenience method: fit then transform
+        self.fit(X)
+        return self.transform(X)
+```
+
+**Key Implementation Details:**
+
+- `axis=0`: Calculate statistics along rows (per feature column)
+- `self.std_[self.std_ == 0] = 1.0`: Prevent division by zero for constant features
+- Separate `fit()` and `transform()`: Essential for proper train/test split handling
+
+##### 🔄 Integration with Gradient Descent
+
+```python
+def improved_gradient_descent(X, y, w_init, b_init, alpha, num_iters):
+    # Step 1: Fit scaler on training data and transform
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # Step 2: Run gradient descent on scaled features
+    w = w_init.copy()
+    b = b_init
+    J_history = []
+
+    for i in range(num_iters):
+        # All computations now use X_scaled instead of X
+        dj_dw, dj_db = compute_gradient(X_scaled, y, w, b)
+
+        w = w - alpha * dj_dw
+        b = b - alpha * dj_db
+
+        if i % 100 == 0:
+            cost = compute_cost(X_scaled, y, w, b)
+            J_history.append(cost)
+            print(f"Iteration {i:4d}: Cost {cost:.6f}")
+
+    return w, b, J_history
+```
+
+**Mathematical Intuition:**
+With standardized features, each feature contributes proportionally to the gradient:
+
+```
+∂J/∂w_j = (1/m) Σ(f_wb - y) * x_j_scaled
+```
+
+Since all x_j_scaled have similar ranges, no single feature dominates the gradient computation.
+
+##### 📊 Result
+
+**Before Scaling:**
+
+- Age coefficient explodes due to large input range [0-80]
+- Training becomes unstable
+- Performance: ~58.7%
+
+**After Scaling:**
+
+- All features have similar influence on gradient updates
+- Coefficients remain in reasonable ranges [-3, +3]
+- Performance: ?
