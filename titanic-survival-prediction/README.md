@@ -152,26 +152,27 @@ While the title analysis provides valuable insights into social hierarchies aboa
 
 Moving forward with Age feature engineering to capture life stage patterns that may be independent of gender and class we started with some EDA. The first issue that we found is that we had 177 NaN around 20% of our dataset, to solve it we decided to use the meadian age of the Titles for those who has NaN age.
 
-Age by Title:
-mean median count
-Title  
-Capt 70.00 70.0 1
-Col 58.00 58.0 2
-Don 40.00 40.0 1
-Dr 42.00 46.5 6
-Jonkheer 38.00 38.0 1
-Lady 48.00 48.0 1
-Major 48.50 48.5 2
-Master 4.57 3.5 36
-Miss 21.77 21.0 146
-Mlle 24.00 24.0 2
-Mme 24.00 24.0 1
-Mr 32.37 30.0 398
-Mrs 35.90 35.0 108
-Ms 28.00 28.0 1
-Rev 43.17 46.5 6
-Sir 49.00 49.0 1
-the Countess 33.00 33.0 1
+### AGE STATISTICS BY TITLE
+
+| **Title**    | **Mean Age** | **Median Age** | **Count** |
+| ------------ | ------------ | -------------- | --------- |
+| Capt         | 70.00        | 70.0           | 1         |
+| Col          | 58.00        | 58.0           | 2         |
+| Don          | 40.00        | 40.0           | 1         |
+| Dr           | 42.00        | 46.5           | 6         |
+| Jonkheer     | 38.00        | 38.0           | 1         |
+| Lady         | 48.00        | 48.0           | 1         |
+| Major        | 48.50        | 48.5           | 2         |
+| **Master**   | **4.57**     | **3.5**        | 36        |
+| Miss         | 21.77        | 21.0           | 146       |
+| Mlle         | 24.00        | 24.0           | 2         |
+| Mme          | 24.00        | 24.0           | 1         |
+| Mr           | 32.37        | 30.0           | 398       |
+| Mrs          | 35.90        | 35.0           | 108       |
+| Ms           | 28.00        | 28.0           | 1         |
+| Rev          | 43.17        | 46.5           | 6         |
+| Sir          | 49.00        | 49.0           | 1         |
+| the Countess | 33.00        | 33.0           | 1         |
 
 with it we imputed the age for the 177 missing ones.
 
