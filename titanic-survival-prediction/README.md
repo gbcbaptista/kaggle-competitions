@@ -12,7 +12,7 @@
 
 **Objective**: Implement ML algorithms from scratch to predict passenger survival  
 **Approach**: Focus on clean implementations with thorough explanations  
-**Current Best**: Logistic Regression (78.2% accuracy)
+**Current Best**: Logistic Regression (81.00% accuracy)
 
 ## 🛠️ Implementation Progress
 
