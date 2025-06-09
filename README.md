@@ -12,7 +12,7 @@ Implementing algorithms from scratch
 
 | Competition                              | Type                  | Goal             | Score                | Status     |
 | ---------------------------------------- | --------------------- | ---------------- | -------------------- | ---------- |
-| [Titanic](./titanic-survival-prediction) | Binary Classification | Predict survival | 78.2% (target: 80%+) | 🔥 Active  |
+| [Titanic](./titanic-survival-prediction) | Binary Classification | Predict survival | 78.2% (target: 85%+) | 🔥 Active  |
 | House Prices                             | Regression            | Predict prices   | Coming soon          | ⏳ Planned |
 
 ## � Algorithms Implemented
@@ -41,7 +41,7 @@ Implementing algorithms from scratch
 
 - Advanced feature engineering
 - Building Random Forest from scratch
-- Target: >80% accuracy
+- Target: > 85% accuracy
 
 <div align="center">
   <sub>🚀 Building AI solutions one algorithm at a time</sub>
