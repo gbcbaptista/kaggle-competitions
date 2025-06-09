@@ -322,16 +322,85 @@ With standardized features, each feature contributes proportionally to the gradi
 
 Since all x_j_scaled have similar ranges, no single feature dominates the gradient computation.
 
-##### 📊 Result
+#### Results and Analysis
 
-**Before Scaling:**
+### MODEL PERFORMANCE COMPARISON
 
-- Age coefficient explodes due to large input range [0-80]
-- Training becomes unstable
-- Performance: ~58.7%
+| **Version**   | **Features Used**        | **Our Model** | **Sklearn** | **Δ**      |
+| ------------- | ------------------------ | ------------- | ----------- | ---------- |
+| **Baseline**  | `Sex` + `Pclass`         | 78.20%        | 78.20%      | 🟢 ±0.00%  |
+| **Basic Age** | `Sex` + `Pclass` + `Age` | 58.70%        | 81.00%      | 🔴 -22.30% |
+| **Scaled**    | `Sex` + `Pclass` + `Age` | 81.00%        | 81.00%      | 🟢 ±0.00%  |
 
-**After Scaling:**
+**Coefficient Analysis (After Scaling):**
 
-- All features have similar influence on gradient updates
-- Coefficients remain in reasonable ranges [-3, +3]
-- Performance: ?
+```
+Sex_numeric:     1.216260  (High importance, stable)
+Pclass:         -0.880432  (Moderate importance)
+Age:            -0.328467  (Low-moderate importance)
+```
+
+**Key Improvements:**
+
+1. **Performance Recovery**: Our model accuracy jumped from 58.70% to 81.00% (+22.30%)
+2. **Coefficient Stability**: Values now in reasonable range [-1.5, +1.5] instead of explosive magnitudes
+3. **Perfect Sklearn Match**: Both implementations now achieve identical 81.00% accuracy
+4. **Convergence Stability**: Cost function decreases smoothly from 0.682 to 0.461
+
+**Training Convergence Analysis:**
+
+```
+Before Scaling:          After Scaling:
+Iteration 0: 4.296151    Iteration 0: 0.682374
+Iteration 100: 12.053544 Iteration 100: 0.469278
+Iteration 200: 11.025234 Iteration 200: 0.461979
+...                      Iteration 300: 0.461115
+Cost oscillating         Cost converging smoothly
+```
+
+##### 🔍 Feature Importance Insights
+
+**Age Feature Analysis:**
+
+- **Coefficient**: -0.328467 (negative correlation with survival)
+- **Interpretation**: Each standard deviation increase in age decreases survival odds
+- **Business Logic**: Younger passengers had higher survival rates, consistent with "women and children first"
+
+**Feature Ranking by Impact:**
+
+1. **Sex** (1.216): Being female dramatically increases survival probability
+2. **Pclass** (-0.880): Higher class (lower number) improves survival chances
+3. **Age** (-0.328): Younger age provides survival advantage
+
+##### ✅ Technical Validation
+
+**Implementation Correctness Confirmed:**
+
+- ✅ **Numerical Stability**: Coefficients within expected ranges
+- ✅ **Convergence**: Smooth cost reduction to stable minimum
+- ✅ **sklearn Parity**: Identical performance validates our implementation
+- ✅ **Feature Scaling**: Proper standardization (μ=0, σ=1) applied
+
+**Code Quality Improvements:**
+
+- **Modular Design**: `StandardScaler` class follows sklearn API
+- **Robust Handling**: Division by zero prevention for constant features
+- **Reusable Components**: Separate fit/transform methods enable proper train/test workflow
+
+##### 🎯 Conclusion
+
+**Feature Scaling Success:**
+The implementation of proper feature standardization completely resolved the numerical instability issues. The dramatic improvement from 58.70% to 81.00% accuracy demonstrates the critical importance of preprocessing when features have different scales.
+
+**Key Learnings:**
+
+1. **Scale Matters**: Features with different ranges can destabilize gradient descent
+2. **Preprocessing is Critical**: Proper standardization is essential for optimal performance
+3. **Implementation Validation**: Matching sklearn results confirms algorithmic correctness
+4. **Age Adds Value**: The 2.80% accuracy improvement justifies including age in the model
+
+**Next Steps:**
+
+- ✅ **Feature Scaling**: Successfully implemented and validated
+- 🎯 **Next Feature**: Explore Cabin and Ticket information for additional improvements
+- 📈 **Model Enhancement**: Consider regularization techniques to prevent overfitting
