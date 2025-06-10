@@ -4,8 +4,8 @@
 
 <div align="center">
   <img src="https://img.shields.io/badge/Status-In%20Progress-orange" alt="Status">
-  <img src="https://img.shields.io/badge/Score-0.782-blue" alt="Score">
-  <img src="https://img.shields.io/badge/Target-0.80+-brightgreen" alt="Target">
+  <img src="https://img.shields.io/badge/Score-0.810-blue" alt="Score">
+  <img src="https://img.shields.io/badge/Target-0.85+-brightgreen" alt="Target">
 </div>
 
 ## 🎯 Project Overview
